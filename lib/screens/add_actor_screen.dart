@@ -1,5 +1,7 @@
+import 'package:actrconnectr/providers/auth.dart';
 import "package:flappy_search_bar/flappy_search_bar.dart";
 import "package:flutter/material.dart";
+import 'package:provider/provider.dart';
 
 import "../models/actor.dart";
 
@@ -39,10 +41,15 @@ class AddActorScreen extends StatelessWidget {
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10),
-          child: SearchBar<Actor>(
-            onSearch: (String query) => Actor.search(query),
-            onItemFound: (Actor actor, int _index) =>
-                _actorItem(actor, context),
+          child: Consumer<Auth>(
+            builder: (context, auth, child) => SearchBar<Actor>(
+              onSearch: (String query) => Actor.search(
+                query,
+                auth.apiKey,
+              ),
+              onItemFound: (Actor actor, int _index) =>
+                  _actorItem(actor, context),
+            ),
           ),
         ),
       ),

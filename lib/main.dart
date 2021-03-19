@@ -1,6 +1,11 @@
+import 'package:actrconnectr/screens/add_api_key_screen.dart';
+import 'package:actrconnectr/screens/movies_screen.dart';
 import "package:flutter/material.dart";
+import 'package:provider/provider.dart';
 
+import 'providers/auth.dart';
 import "screens/add_actor_screen.dart";
+import 'screens/api_key_is_missing_screen.dart';
 
 void main() {
   runApp(MyApp());
@@ -9,51 +14,20 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: "Flutter Demo",
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: MyHomePage(title: "Act'r Connect'r"),
-      routes: {
-        AddActorScreen.routeName: (context) => AddActorScreen(),
-      },
-    );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
-
-  final String title;
-
-  @override
-  _MyHomePageState createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              "Lorem Ipsum",
-            ),
-          ],
+    return ChangeNotifierProvider(
+      create: (context) => Auth(),
+      child: Consumer<Auth>(
+        builder: (context, auth, child) => MaterialApp(
+          title: "Act'r Connect'r",
+          theme: ThemeData(
+            primarySwatch: Colors.blue,
+          ),
+          home: auth.apiKey == null ? APIKeyIsMissingScreen() : MoviesScreen(),
+          routes: {
+            AddActorScreen.routeName: (context) => AddActorScreen(),
+            AddAPIKeyScreen.routeName: (context) => AddAPIKeyScreen(),
+          },
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.of(context).pushNamed(AddActorScreen.routeName);
-        },
-        tooltip: "Add Actor",
-        child: Icon(Icons.add),
       ),
     );
   }

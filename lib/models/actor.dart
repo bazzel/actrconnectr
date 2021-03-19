@@ -16,12 +16,13 @@ class Actor {
   final String name;
   final String profilePath;
 
-  static Future<List<Actor>> search(String query) async {
+  static Future<List<Actor>> search(String query, String apiKey) async {
+    // "777a076f90fe0b98a0c46079c7186f43"
     var url = Uri.https(
       "api.themoviedb.org",
       "/3/search/person",
       {
-        "api_key": "xyz",
+        "api_key": apiKey,
         "query": query,
       },
     );
