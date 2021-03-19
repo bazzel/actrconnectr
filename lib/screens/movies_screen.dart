@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'add_actor_screen.dart';
+import 'add_api_key_screen.dart';
+
+enum AppBarMenu { apiKey }
 
 class MoviesScreen extends StatefulWidget {
   @override
@@ -15,6 +18,25 @@ class _MoviesScreenState extends State<MoviesScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Act'r Connect'r"),
+        actions: [
+          PopupMenuButton(
+            icon: Icon(Icons.more_vert),
+            itemBuilder: (BuildContext context) => <PopupMenuEntry>[
+              const PopupMenuItem(
+                child: Text("API Key"),
+                value: AppBarMenu.apiKey,
+              ),
+            ],
+            onSelected: (value) {
+              switch (value) {
+                case AppBarMenu.apiKey:
+                  Navigator.of(context).pushNamed(AddAPIKeyScreen.routeName);
+                  break;
+                default:
+              }
+            },
+          ),
+        ],
       ),
       body: Consumer<Auth>(
         builder: (context, auth, child) => Center(

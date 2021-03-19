@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
             future: auth.initValues(),
             builder: (ctx, snapshot) {
               if (snapshot.connectionState == ConnectionState.done) {
-                return auth.apiKey == null
+                return auth.apiKey.isEmpty
                     ? APIKeyIsMissingScreen()
                     : MoviesScreen();
               } else {

@@ -2,13 +2,9 @@ import 'package:actrconnectr/providers/auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class AddAPIKeyScreen extends StatefulWidget {
+class AddAPIKeyScreen extends StatelessWidget {
   static const routeName = "/add-api-key";
-  @override
-  _AddAPIKeyScreenState createState() => _AddAPIKeyScreenState();
-}
 
-class _AddAPIKeyScreenState extends State<AddAPIKeyScreen> {
   final _formKey = GlobalKey<FormState>();
 
   void _handleOnFieldSubmitted() {
@@ -19,7 +15,7 @@ class _AddAPIKeyScreenState extends State<AddAPIKeyScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Add API Key"),
+        title: Text("API Key"),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),

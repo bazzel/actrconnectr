@@ -7,7 +7,7 @@ class Auth with ChangeNotifier {
 
   Future<void> initValues() async {
     return _prefs.then((prefs) {
-      _apiKey = prefs.getString('apiKey');
+      _apiKey = prefs.getString('apiKey') ?? "";
     });
   }
 
