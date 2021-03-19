@@ -22,7 +22,18 @@ class MyApp extends StatelessWidget {
           theme: ThemeData(
             primarySwatch: Colors.blue,
           ),
-          home: auth.apiKey == null ? APIKeyIsMissingScreen() : MoviesScreen(),
+          home: FutureBuilder(
+            future: auth.initValues(),
+            builder: (ctx, snapshot) {
+              if (snapshot.connectionState == ConnectionState.done) {
+                return auth.apiKey == null
+                    ? APIKeyIsMissingScreen()
+                    : MoviesScreen();
+              } else {
+                return CircularProgressIndicator();
+              }
+            },
+          ),
           routes: {
             AddActorScreen.routeName: (context) => AddActorScreen(),
             AddAPIKeyScreen.routeName: (context) => AddAPIKeyScreen(),
