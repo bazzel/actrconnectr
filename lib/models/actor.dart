@@ -34,21 +34,16 @@ class Actor {
       var results = jsonResponse["results"]
           .where((result) => result["known_for_department"] == "Acting")
           .toList();
-      return results
-          .map((result) {
-            var knownFor = (result["known_for"] as List)
-                .map((item) => item["title"] ?? item["name"])
-                .toList()
-                .cast<String>();
-            return Actor(
-              id: result["id"],
-              name: result["name"],
-              profilePath: result["profile_path"],
-              knownFor: knownFor,
-            );
-          })
-          .toList()
-          .cast<Actor>();
+      return List<Actor>.from(results.map((result) {
+        var knownFor = List<String>.from(
+            (result["known_for"]).map((item) => item["title"] ?? item["name"]));
+        return Actor(
+          id: result["id"],
+          name: result["name"],
+          profilePath: result["profile_path"],
+          knownFor: knownFor,
+        );
+      }));
     } else {
       throw ("Request failed with status: ${response.statusCode}.");
     }
