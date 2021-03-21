@@ -1,7 +1,8 @@
-import 'package:actrconnectr/providers/auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../providers/auth.dart';
+import '../widgets/actors_list.dart';
 import 'add_actor_screen.dart';
 import 'add_api_key_screen.dart';
 
@@ -40,17 +41,7 @@ class _MoviesScreenState extends State<MoviesScreen> {
       ),
       body: Consumer<Auth>(
         builder: (context, auth, child) => Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Text(
-                "Lorem Ipsum",
-              ),
-              Text(
-                auth.apiKey,
-              ),
-            ],
-          ),
+          child: ActorsList(),
         ),
       ),
       floatingActionButton: FloatingActionButton(

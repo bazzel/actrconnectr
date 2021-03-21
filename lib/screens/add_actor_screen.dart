@@ -1,3 +1,4 @@
+import 'package:actrconnectr/providers/actors.dart';
 import 'package:actrconnectr/providers/auth.dart';
 import "package:flappy_search_bar/flappy_search_bar.dart";
 import "package:flutter/material.dart";
@@ -28,8 +29,13 @@ class AddActorScreen extends StatelessWidget {
   }
 
   void _handleOnTap(BuildContext context, Actor actor) {
-    print("${actor.name} tapped...");
+    Provider.of<Actors>(context, listen: false).addActor(actor);
     Navigator.of(context).pop();
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text("${actor.name} added."),
+      ),
+    );
   }
 
   @override

@@ -1,3 +1,4 @@
+import 'package:actrconnectr/providers/actors.dart';
 import 'package:actrconnectr/screens/add_api_key_screen.dart';
 import 'package:actrconnectr/screens/movies_screen.dart';
 import "package:flutter/material.dart";
@@ -14,8 +15,11 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => Auth(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => Auth()),
+        ChangeNotifierProvider(create: (context) => Actors()),
+      ],
       child: Consumer<Auth>(
         builder: (context, auth, child) => MaterialApp(
           title: "Act'r Connect'r",
