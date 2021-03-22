@@ -25,26 +25,16 @@ class _ActorsListState extends State<ActorsList> {
             ),
             onDeleted: () {
               Provider.of<Actors>(context, listen: false).deleteActor(actor);
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text("${actor.name} removed."),
+                ),
+              );
             },
           );
         }),
       ),
       spacing: 8.0,
     );
-    // return ListView.builder(
-    //   itemCount: _actors.length,
-    //   itemBuilder: (ctx, i) {
-    //     final actor = _actors[i];
-
-    //     return ListTile(
-    //       leading: CircleAvatar(
-    //         backgroundImage: (actor.profileImage != null)
-    //             ? NetworkImage(actor.profileImage)
-    //             : null,
-    //       ),
-    //       title: Text(actor.name),
-    //     );
-    //   },
-    // );
   }
 }
