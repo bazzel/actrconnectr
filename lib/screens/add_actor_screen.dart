@@ -1,10 +1,11 @@
-import 'package:actrconnectr/providers/actors.dart';
-import 'package:actrconnectr/providers/auth.dart';
+import 'package:actrconnectr/models/movie.dart';
 import "package:flappy_search_bar/flappy_search_bar.dart";
 import "package:flutter/material.dart";
 import 'package:provider/provider.dart';
 
 import "../models/actor.dart";
+import '../providers/actors.dart';
+import '../providers/auth.dart';
 
 class AddActorScreen extends StatelessWidget {
   static const routeName = "/add-actor";
@@ -28,7 +29,11 @@ class AddActorScreen extends StatelessWidget {
     );
   }
 
-  void _handleOnTap(BuildContext context, Actor actor) {
+  void _handleOnTap(BuildContext context, Actor actor) async {
+    var apiKey = Provider.of<Auth>(context, listen: false).apiKey;
+    List<Movie> movies = await Movie.combinedCreditsFor(actor, apiKey);
+    actor.movies = movies;
+
     Provider.of<Actors>(context, listen: false).addActor(actor);
     Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(

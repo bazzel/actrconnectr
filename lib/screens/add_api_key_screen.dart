@@ -1,6 +1,7 @@
-import 'package:actrconnectr/providers/auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
+import '../providers/auth.dart';
 
 class AddAPIKeyScreen extends StatelessWidget {
   static const routeName = "/add-api-key";

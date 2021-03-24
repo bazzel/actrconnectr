@@ -1,3 +1,4 @@
+import 'package:actrconnectr/widgets/same_movies_list.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -41,7 +42,12 @@ class _MoviesScreenState extends State<MoviesScreen> {
       ),
       body: Consumer<Auth>(
         builder: (context, auth, child) => Center(
-          child: ActorsList(),
+          child: Column(
+            children: [
+              ActorsList(),
+              SameMoviesList(),
+            ],
+          ),
         ),
       ),
       floatingActionButton: FloatingActionButton(

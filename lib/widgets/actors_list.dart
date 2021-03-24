@@ -1,14 +1,10 @@
-import 'package:actrconnectr/models/actor.dart';
-import 'package:actrconnectr/providers/actors.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class ActorsList extends StatefulWidget {
-  @override
-  _ActorsListState createState() => _ActorsListState();
-}
+import '../models/actor.dart';
+import '../providers/actors.dart';
 
-class _ActorsListState extends State<ActorsList> {
+class ActorsList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final _actorsProvider = Provider.of<Actors>(context);

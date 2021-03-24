@@ -1,7 +1,9 @@
 import "dart:convert" as convert;
 
-import "package:flutter/material.dart";
+import 'package:flutter/foundation.dart';
 import "package:http/http.dart" as http;
+
+import 'movie.dart';
 
 class Actor {
   Actor({
@@ -12,12 +14,12 @@ class Actor {
   });
 
   final int id;
-  final List<String> knownFor;
   final String name;
   final String profilePath;
+  final List<String> knownFor;
+  List<Movie> movies;
 
   static Future<List<Actor>> search(String query, String apiKey) async {
-    // "777a076f90fe0b98a0c46079c7186f43"
     var url = Uri.https(
       "api.themoviedb.org",
       "/3/search/person",
