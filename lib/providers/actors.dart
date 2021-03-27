@@ -4,7 +4,8 @@ import '../models/actor.dart';
 import '../models/movie.dart';
 
 class Actors with ChangeNotifier {
-  var _actors = <Actor>[];
+  // Use a Set to avoid duplicate Actors.
+  var _actors = <Actor>{};
 
   List<Actor> get actors {
     return [..._actors];

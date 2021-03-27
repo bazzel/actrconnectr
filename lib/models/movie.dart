@@ -1,7 +1,8 @@
+import "dart:convert" as convert;
+
+import "package:equatable/equatable.dart";
 import 'package:flutter/foundation.dart';
 import "package:http/http.dart" as http;
-import "dart:convert" as convert;
-import "package:equatable/equatable.dart";
 
 import 'actor.dart';
 
@@ -19,27 +20,29 @@ class Movie extends Equatable {
   });
 
   static Future<List<Movie>> combinedCreditsFor(
-      Actor actor, String apiKey) async {
-    var url = Uri.https(
+    Actor actor,
+    String apiKey,
+  ) async {
+    final url = Uri.https(
       "api.themoviedb.org",
       "3/person/${actor.id}/combined_credits",
       {
         "api_key": apiKey,
       },
     );
-
     final response = await http.get(url);
 
     if (response.statusCode == 200) {
-      var jsonResponse = convert.jsonDecode(response.body);
-      List results = jsonResponse["cast"];
+      final jsonResponse = convert.jsonDecode(response.body);
+      final results = jsonResponse["cast"];
 
-      results.removeWhere((element) => element["title"] == null);
+      results.removeWhere(
+          (element) => element["title"] == null && element["name"] == null);
 
       return List<Movie>.from(results.map((result) {
         return Movie(
           id: result["id"],
-          title: result["title"],
+          title: result["title"] ?? result["name"],
           posterPath: result["poster_path"],
           mediaType: result["media_type"],
         );

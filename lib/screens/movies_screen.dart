@@ -1,9 +1,9 @@
-import 'package:actrconnectr/widgets/same_movies_list.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/auth.dart';
 import '../widgets/actors_list.dart';
+import '../widgets/same_movies_list.dart';
 import 'add_actor_screen.dart';
 import 'add_api_key_screen.dart';
 
