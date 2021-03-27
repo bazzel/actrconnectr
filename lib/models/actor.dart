@@ -12,13 +12,15 @@ class Actor extends Equatable {
     @required this.name,
     @required this.profilePath,
     @required this.knownFor,
+    this.isSelected = true,
   });
 
   final int id;
-  final List<String> knownFor;
-  List<Movie> movies;
   final String name;
   final String profilePath;
+  final List<String> knownFor;
+  List<Movie> movies;
+  bool isSelected = true;
 
   @override
   List<Object> get props => [id];

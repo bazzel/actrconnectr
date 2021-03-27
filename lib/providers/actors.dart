@@ -14,11 +14,11 @@ class Actors with ChangeNotifier {
   List<Movie> get sameMovies {
     Set<Movie> movies;
 
-    if (_actors.isEmpty) {
+    if (selectedActors.isEmpty) {
       return [];
     }
 
-    _actors.forEach((actor) {
+    selectedActors.forEach((actor) {
       if (movies == null) {
         movies = Set<Movie>.from(actor.movies);
       } else {
@@ -29,8 +29,17 @@ class Actors with ChangeNotifier {
     return List<Movie>.from(movies);
   }
 
+  List<Actor> get selectedActors {
+    return List<Actor>.of(actors.where((actor) => actor.isSelected));
+  }
+
   void addActor(Actor actor) {
     _actors.add(actor);
+    notifyListeners();
+  }
+
+  void toggle(Actor actor) {
+    actor.isSelected = !actor.isSelected;
     notifyListeners();
   }
 
