@@ -7,14 +7,13 @@ import '../providers/actors.dart';
 class SameMoviesList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final _actorsProvider = Provider.of<Actors>(context);
-    final _sameMovies = _actorsProvider.sameMovies;
+    final sameMovies = context.watch<Actors>().sameMovies;
 
     return Expanded(
       child: ListView.separated(
-        itemCount: _sameMovies.length,
+        itemCount: sameMovies.length,
         itemBuilder: (context, index) {
-          final movie = _sameMovies[index];
+          final movie = sameMovies[index];
           return ListTile(
             title: Text(movie.title),
             leading: ClipRect(

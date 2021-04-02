@@ -30,11 +30,11 @@ class AddActorScreen extends StatelessWidget {
   }
 
   void _handleOnTap(BuildContext context, Actor actor) async {
-    var apiKey = Provider.of<Auth>(context, listen: false).apiKey;
+    final apiKey = context.read<Auth>().apiKey;
     List<Movie> movies = await Movie.combinedCreditsFor(actor.id, apiKey);
-    actor.movies = movies;
 
-    Provider.of<Actors>(context, listen: false).addActor(actor);
+    actor.movies = movies;
+    context.read<Actors>().addActor(actor);
     Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
@@ -45,6 +45,8 @@ class AddActorScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final apiKey = context.read<Auth>().apiKey;
+
     return Scaffold(
       appBar: AppBar(
         title: Text("Add Actor"),
@@ -52,15 +54,13 @@ class AddActorScreen extends StatelessWidget {
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10),
-          child: Consumer<Auth>(
-            builder: (context, auth, child) => SearchBar<Actor>(
-              onSearch: (String query) => Actor.search(
-                query,
-                auth.apiKey,
-              ),
-              onItemFound: (Actor actor, int _index) =>
-                  _actorItem(actor, context),
+          child: SearchBar<Actor>(
+            onSearch: (String query) => Actor.search(
+              query,
+              apiKey,
             ),
+            onItemFound: (Actor actor, int _index) =>
+                _actorItem(actor, context),
           ),
         ),
       ),

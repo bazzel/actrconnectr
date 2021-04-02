@@ -12,11 +12,11 @@ class ActorsList extends StatefulWidget {
 class _ActorsListState extends State<ActorsList> {
   @override
   Widget build(BuildContext context) {
-    final _actorsProvider = Provider.of<Actors>(context);
-    final _actors = _actorsProvider.actors;
+    final actors = context.watch<Actors>().actors;
+
     return Wrap(
       children: List<Widget>.from(
-        _actors.map((Actor actor) {
+        actors.map((Actor actor) {
           return InputChip(
             selected: actor.isSelected,
             label: Text(actor.name),
@@ -27,11 +27,11 @@ class _ActorsListState extends State<ActorsList> {
             ),
             onSelected: (bool _newValue) {
               setState(() {
-                _actorsProvider.toggle(actor);
+                context.read<Actors>().toggle(actor);
               });
             },
             onDeleted: () {
-              Provider.of<Actors>(context, listen: false).deleteActor(actor);
+              context.read<Actors>().deleteActor(actor);
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                   content: Text("${actor.name} removed."),

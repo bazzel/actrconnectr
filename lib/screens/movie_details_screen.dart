@@ -1,36 +1,32 @@
-import 'package:actrconnectr/models/actor.dart';
-import 'package:actrconnectr/models/movie.dart';
-import 'package:actrconnectr/providers/auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class MovieDetailsScreen extends StatefulWidget {
+import '../models/actor.dart';
+import '../models/movie.dart';
+import '../providers/auth.dart';
+
+class MovieDetailsScreen extends StatelessWidget {
   static const routeName = '/movie-details';
 
   @override
-  _MovieDetailsScreenState createState() => _MovieDetailsScreenState();
-}
-
-class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
-  @override
   Widget build(BuildContext context) {
-    final Movie _movie = ModalRoute.of(context).settings.arguments;
+    final Movie movie = ModalRoute.of(context).settings.arguments;
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(_movie.title),
+        title: Text(movie.title),
       ),
       body: SafeArea(
         child: Column(
           children: [
-            (_movie.backdropImage != null)
-                ? Image.network(_movie.backdropImage)
+            (movie.backdropImage != null)
+                ? Image.network(movie.backdropImage)
                 : null,
             SizedBox(
               height: 16.0,
             ),
             FutureBuilder(
-              future: _fetchActors(_movie.id),
+              future: _fetchActors(movie.id, context),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return CircularProgressIndicator();
@@ -64,8 +60,8 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
     );
   }
 
-  Future<List<Actor>> _fetchActors(int movieId) {
-    var apiKey = Provider.of<Auth>(context, listen: false).apiKey;
+  Future<List<Actor>> _fetchActors(int movieId, BuildContext context) {
+    var apiKey = context.watch<Auth>().apiKey;
     return Actor.actorsFor(movieId, apiKey);
   }
 }

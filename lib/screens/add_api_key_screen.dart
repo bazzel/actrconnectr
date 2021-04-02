@@ -24,23 +24,21 @@ class AddAPIKeyScreen extends StatelessWidget {
             key: _formKey,
             child: SingleChildScrollView(
               child: Column(children: <Widget>[
-                Consumer<Auth>(
-                  builder: (context, auth, child) => TextFormField(
-                    initialValue: auth.apiKey,
-                    decoration: InputDecoration(
-                      labelText: "API Key",
-                      helperText:
-                          "You can obtain a free API Key from themoviedb.org",
-                    ),
-                    textInputAction: TextInputAction.done,
-                    onSaved: (value) {
-                      Provider.of<Auth>(context, listen: false).apiKey = value;
-                    },
-                    onFieldSubmitted: (_) {
-                      _handleOnFieldSubmitted();
-                      Navigator.of(context).pop();
-                    },
+                TextFormField(
+                  initialValue: context.read<Auth>().apiKey,
+                  decoration: InputDecoration(
+                    labelText: "API Key",
+                    helperText:
+                        "You can obtain a free API Key from themoviedb.org",
                   ),
+                  textInputAction: TextInputAction.done,
+                  onSaved: (value) {
+                    context.read<Auth>().apiKey = value;
+                  },
+                  onFieldSubmitted: (_) {
+                    _handleOnFieldSubmitted();
+                    Navigator.of(context).pop();
+                  },
                 ),
               ]),
             )),

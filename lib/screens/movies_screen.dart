@@ -9,12 +9,7 @@ import 'add_api_key_screen.dart';
 
 enum AppBarMenu { apiKey }
 
-class MoviesScreen extends StatefulWidget {
-  @override
-  _MoviesScreenState createState() => _MoviesScreenState();
-}
-
-class _MoviesScreenState extends State<MoviesScreen> {
+class MoviesScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,14 +35,12 @@ class _MoviesScreenState extends State<MoviesScreen> {
           ),
         ],
       ),
-      body: Consumer<Auth>(
-        builder: (context, auth, child) => Center(
-          child: Column(
-            children: [
-              ActorsList(),
-              SameMoviesList(),
-            ],
-          ),
+      body: Center(
+        child: Column(
+          children: [
+            ActorsList(),
+            SameMoviesList(),
+          ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
