@@ -11,16 +11,49 @@ class Actor extends Equatable {
     @required this.id,
     @required this.name,
     @required this.profilePath,
-    @required this.knownFor,
+    this.knownFor,
+    this.character,
     this.isSelected = true,
   });
 
   final int id;
   final String name;
   final String profilePath;
-  final List<String> knownFor;
+  List<String> knownFor;
   List<Movie> movies;
+  String character;
   bool isSelected = true;
+
+  static Future<List<Actor>> actorsFor(
+    int movieId,
+    String apiKey,
+  ) async {
+    final url = Uri.https(
+      "api.themoviedb.org",
+      "3/movie/$movieId/credits",
+      {
+        "api_key": apiKey,
+      },
+    );
+    final response = await http.get(url);
+
+    if (response.statusCode == 200) {
+      var jsonResponse = convert.jsonDecode(response.body);
+      var results = jsonResponse["cast"]
+          .where((result) => result["known_for_department"] == "Acting")
+          .toList();
+      return List<Actor>.from(results.map((result) {
+        return Actor(
+          id: result["id"],
+          name: result["name"],
+          character: result["character"],
+          profilePath: result["profile_path"],
+        );
+      }));
+    } else {
+      throw ("Request failed with status: ${response.statusCode}.");
+    }
+  }
 
   @override
   List<Object> get props => [id];

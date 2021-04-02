@@ -1,12 +1,13 @@
-import 'package:actrconnectr/providers/actors.dart';
-import 'package:actrconnectr/screens/add_api_key_screen.dart';
-import 'package:actrconnectr/screens/movies_screen.dart';
 import "package:flutter/material.dart";
 import 'package:provider/provider.dart';
 
+import 'providers/actors.dart';
 import 'providers/auth.dart';
 import "screens/add_actor_screen.dart";
+import 'screens/add_api_key_screen.dart';
 import 'screens/api_key_is_missing_screen.dart';
+import 'screens/movie_details_screen.dart';
+import 'screens/movies_screen.dart';
 
 void main() {
   runApp(MyApp());
@@ -41,6 +42,7 @@ class MyApp extends StatelessWidget {
           routes: {
             AddActorScreen.routeName: (context) => AddActorScreen(),
             AddAPIKeyScreen.routeName: (context) => AddAPIKeyScreen(),
+            MovieDetailsScreen.routeName: (context) => MovieDetailsScreen(),
           },
         ),
       ),

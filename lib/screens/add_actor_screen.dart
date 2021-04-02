@@ -31,7 +31,7 @@ class AddActorScreen extends StatelessWidget {
 
   void _handleOnTap(BuildContext context, Actor actor) async {
     var apiKey = Provider.of<Auth>(context, listen: false).apiKey;
-    List<Movie> movies = await Movie.combinedCreditsFor(actor, apiKey);
+    List<Movie> movies = await Movie.combinedCreditsFor(actor.id, apiKey);
     actor.movies = movies;
 
     Provider.of<Actors>(context, listen: false).addActor(actor);

@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:flutter/foundation.dart';
 
 import '../models/actor.dart';
@@ -7,9 +9,7 @@ class Actors with ChangeNotifier {
   // Use a Set to avoid duplicate Actors.
   var _actors = <Actor>{};
 
-  List<Actor> get actors {
-    return [..._actors];
-  }
+  UnmodifiableListView<Actor> get actors => UnmodifiableListView(_actors);
 
   List<Movie> get sameMovies {
     Set<Movie> movies;
@@ -29,9 +29,8 @@ class Actors with ChangeNotifier {
     return List<Movie>.from(movies);
   }
 
-  List<Actor> get selectedActors {
-    return List<Actor>.of(actors.where((actor) => actor.isSelected));
-  }
+  List<Actor> get selectedActors =>
+      List<Actor>.of(actors.where((actor) => actor.isSelected));
 
   void addActor(Actor actor) {
     _actors.add(actor);
