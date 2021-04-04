@@ -5,11 +5,11 @@ import 'package:flutter/foundation.dart';
 import "package:http/http.dart" as http;
 
 class Movie extends Equatable {
-  final int id;
-  final String title;
-  final String posterPath;
-  final String backdropPath;
-  final String mediaType;
+  int id;
+  String title;
+  String posterPath;
+  String backdropPath;
+  String mediaType;
 
   Movie({
     @required this.id,
@@ -18,6 +18,14 @@ class Movie extends Equatable {
     @required this.backdropPath,
     @required this.mediaType,
   });
+
+  Movie.fromJson(Map<String, dynamic> json) {
+    this.id = json["id"];
+    this.title = json["title"] ?? json["name"];
+    this.posterPath = json["poster_path"];
+    this.backdropPath = json["backdrop_path"];
+    this.mediaType = json["media_type"];
+  }
 
   static Future<List<Movie>> combinedCreditsFor(
     int actorId,
@@ -40,13 +48,7 @@ class Movie extends Equatable {
           (element) => element["title"] == null && element["name"] == null);
 
       return List<Movie>.from(results.map((result) {
-        return Movie(
-          id: result["id"],
-          title: result["title"] ?? result["name"],
-          posterPath: result["poster_path"],
-          backdropPath: result["backdrop_path"],
-          mediaType: result["media_type"],
-        );
+        return Movie.fromJson(result);
       }));
     } else {
       throw ("Request failed with status: ${response.statusCode}.");

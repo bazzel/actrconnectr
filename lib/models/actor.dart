@@ -2,6 +2,7 @@ import "dart:convert" as convert;
 
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/gestures.dart';
 import "package:http/http.dart" as http;
 
 import 'movie.dart';
@@ -16,13 +17,29 @@ class Actor extends Equatable {
     this.isSelected = true,
   });
 
-  final int id;
-  final String name;
-  final String profilePath;
+  Actor.fromJson(Map<String, dynamic> json) {
+    this.id = json["id"];
+    this.name = json["name"];
+    this.character = json["character"];
+    this.profilePath = json["profile_path"];
+
+    if (json["known_for"] != null) {
+      var knownFor = List<String>.from(
+          (json["known_for"]).map((item) => item["title"] ?? item["name"]));
+      this.knownFor = knownFor;
+    }
+  }
+
+  String character;
+  int id;
+  bool isSelected = true;
   List<String> knownFor;
   List<Movie> movies;
-  String character;
-  bool isSelected = true;
+  String name;
+  String profilePath;
+
+  @override
+  List<Object> get props => [id];
 
   static Future<List<Actor>> actorsFor(
     int movieId,
@@ -43,20 +60,12 @@ class Actor extends Equatable {
           .where((result) => result["known_for_department"] == "Acting")
           .toList();
       return List<Actor>.from(results.map((result) {
-        return Actor(
-          id: result["id"],
-          name: result["name"],
-          character: result["character"],
-          profilePath: result["profile_path"],
-        );
+        return Actor.fromJson(result);
       }));
     } else {
       throw ("Request failed with status: ${response.statusCode}.");
     }
   }
-
-  @override
-  List<Object> get props => [id];
 
   String get profileImage {
     if (profilePath == null) return null;
@@ -85,14 +94,7 @@ class Actor extends Equatable {
           .where((result) => result["known_for_department"] == "Acting")
           .toList();
       return List<Actor>.from(results.map((result) {
-        var knownFor = List<String>.from(
-            (result["known_for"]).map((item) => item["title"] ?? item["name"]));
-        return Actor(
-          id: result["id"],
-          name: result["name"],
-          profilePath: result["profile_path"],
-          knownFor: knownFor,
-        );
+        return Actor.fromJson(result);
       }));
     } else {
       throw ("Request failed with status: ${response.statusCode}.");
