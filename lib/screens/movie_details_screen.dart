@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import '../models/actor.dart';
 import '../models/movie.dart';
 import '../providers/auth.dart';
+import '../providers/actors.dart';
 
 class MovieDetailsScreen extends StatelessWidget {
   static const routeName = '/movie-details';
@@ -21,36 +22,58 @@ class MovieDetailsScreen extends StatelessWidget {
           children: [
             (movie.backdropImage != null)
                 ? Image.network(movie.backdropImage)
-                : null,
+                : Placeholder(
+                    fallbackHeight: 210,
+                  ),
             SizedBox(
               height: 16.0,
             ),
             FutureBuilder(
               future: _fetchActors(movie.id, context),
               builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return CircularProgressIndicator();
-                } else {
-                  final actors = snapshot.data;
-                  return Expanded(
-                    child: ListView.separated(
-                      itemCount: actors.length,
-                      itemBuilder: (context, index) {
-                        final actor = actors[index];
-                        return ListTile(
-                          leading: CircleAvatar(
-                            backgroundImage: (actor.profileImage != null)
-                                ? NetworkImage(actor.profileImage)
-                                : null,
-                          ),
-                          title: Text(actor.name),
-                          subtitle: Text(actor.character),
-                        );
-                      },
-                      separatorBuilder: (BuildContext context, int index) =>
-                          const Divider(),
-                    ),
-                  );
+                try {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return CircularProgressIndicator();
+                  } else {
+                    final actors = snapshot.data;
+                    return Expanded(
+                      child: ListView.builder(
+                        itemCount: actors.length,
+                        itemBuilder: (ctx, index) {
+                          final actor = actors[index];
+                          final isIncluded =
+                              context.watch<Actors>().actors.contains(actor);
+
+                          return SwitchListTile(
+                            title: Text(actor.name),
+                            subtitle: Text(actor.character),
+                            value: isIncluded,
+                            onChanged: (bool value) async {
+                              if (value) {
+                                final apiKey = context.read<Auth>().apiKey;
+                                List<Movie> movies =
+                                    await Movie.combinedCreditsFor(
+                                        actor.id, apiKey);
+
+                                actor.movies = movies;
+
+                                context.read<Actors>().addActor(actor);
+                              } else {
+                                context.read<Actors>().deleteActor(actor);
+                              }
+                            },
+                            secondary: CircleAvatar(
+                              backgroundImage: (actor.profileImage != null)
+                                  ? NetworkImage(actor.profileImage)
+                                  : null,
+                            ),
+                          );
+                        },
+                      ),
+                    );
+                  }
+                } catch (e) {
+                  return Text('No author details available.');
                 }
               },
             ),

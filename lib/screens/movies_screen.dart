@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
-import '../providers/auth.dart';
 import '../widgets/actors_list.dart';
 import '../widgets/same_movies_list.dart';
 import 'add_actor_screen.dart';
