@@ -62,7 +62,7 @@ class Actor extends Equatable {
         return Actor.fromJson(result);
       }));
     } else {
-      throw ("Request failed with status: ${response.statusCode}.");
+      return List.empty();
     }
   }
 
